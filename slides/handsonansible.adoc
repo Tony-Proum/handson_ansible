@@ -4,6 +4,8 @@ Antoine Méausoone <meausoone.a@sfeir.com>
 :revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/
 :revealjs_history: true
 :imagesdir: images
+:source-highlighter: coderay
+:revealjs_theme: sky
 
 == /Me
 
@@ -12,11 +14,15 @@ Antoine Méausoone <meausoone.a@sfeir.com>
 *  Ingénieur logiciel --Atos Worldline-- --Capgemini-- Sfeir \o/
 *  Dev, Ops ...DevOps?
 
-== Problèmes d'Ops aujourd'hui
+[%notitle]
+== Ops today
 
-image::server-rack.jpg[]
+image::server-rack.jpg[background, size=cover]
 
-== Comment ?
+[%step]
+* Comment gérer tous ces serveurs aujourd'hui ?
+
+=== Comment ?
 
 [%step]
 * Accélérer les déploiements ?
@@ -24,23 +30,31 @@ image::server-rack.jpg[]
 * Faciliter la gestion des serveurs ?
 * Automatiser les tâches récurrentes ?
 
-[NOTE.speaker]
---
-* Accélérer les déploiements ?
-* Fiabiliser les environnements ?
-* Faciliter la gestion des serveurs ?
-* Automatiser les tâches récurrentes ?
---
+=== Let's code this !
+
+image::letscodethis.png[background, size=cover]
+
+// [%step]
+// * Let's code this !
+
+=== Scripts shell ?
+
+[%step]
+* Pas "Idempotent"
+* Pas robuste
+* Maintenabilité ?
 
 == Provisionning
 
-image::logo-chef.png[]
-image::logo-puppet.png[]
-image::logo-salt.png[]
-image::logo-ansible.png[]
+[width="15%"]
+|=======
+| image::logo-chef.png[] | image::logo-puppet.png[]
+| image::logo-salt.png[] | image::logo-ansible.png[]
+|=======
 
 == Pourquoi Ansible ?
 
+[%step]
 * Pas d’agents, pas de master
 * Configuration en YAML
 * S’installe avec un simple package
@@ -51,13 +65,9 @@ image::logo-ansible.png[]
 * Créé en 2012 par link:https://www.linkedin.com/in/michaeldehaan/[Michael DeHaan] pour créer un outil simple par rapport aux concurrents Chef et Puppet
 * Racheté par RedHat en 2015
 
+[%notitle,background-iframe="trends-google.html"]
 == Trends
 
-+++
-<script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/925_RC01/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"/m/03d3cjz","geo":"","time":"today 5-y"},{"keyword":"/m/05zxlz3","geo":"","time":"today 5-y"},{"keyword":"/m/0k0vzjb","geo":"","time":"today 5-y"}],"category":0,"property":""}, {"exploreQuery":"q=%2Fm%2F03d3cjz,%2Fm%2F05zxlz3,%2Fm%2F0k0vzjb","guestPath":"https://trends.google.fr:443/trends/embed/"}); </script>
-+++
-
-// https://trends.google.fr/trends/explore?q=%2Fm%2F03d3cjz,%2Fm%2F05zxlz3,%2Fm%2F0k0vzjb,%2Fm%2F0hn8c6s
 
 == Comment ça marche ?
 
@@ -97,16 +107,20 @@ sudo pip install ansible
 
 == Variables
 
-httpd/vars/main.yml
----
+[source,yaml]
+.httpd/vars/main.yml
+----
 httpd_version: 2.3
+----
 
-httpd/tasks/main.yml
----
-- name: Ensure httpd is installed.
+[source,yaml]
+.httpd/tasks/main.yml
+----
+- name: Ensure httpd is installed
   yum: name= "httpd"
             state= present
-            version= {{ version }}
+            version= {{ httpd_version }}
+----
 
 == Tasks
 
