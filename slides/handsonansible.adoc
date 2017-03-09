@@ -56,7 +56,15 @@ image::/slides/images/logo-ansible.png[]
 <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/925_RC01/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"/m/03d3cjz","geo":"","time":"today 5-y"},{"keyword":"/m/05zxlz3","geo":"","time":"today 5-y"},{"keyword":"/m/0k0vzjb","geo":"","time":"today 5-y"}],"category":0,"property":""}, {"exploreQuery":"q=%2Fm%2F03d3cjz,%2Fm%2F05zxlz3,%2Fm%2F0k0vzjb","guestPath":"https://trends.google.fr:443/trends/embed/"}); </script>
 +++
 
+// https://trends.google.fr/trends/explore?q=%2Fm%2F03d3cjz,%2Fm%2F05zxlz3,%2Fm%2F0k0vzjb,%2Fm%2F0hn8c6s
+
 == Comment ça marche ?
+
+// Schéma ssh python
+
+== Ad-hoc commmande
+
+
 
 == Installation
 
@@ -69,8 +77,6 @@ sudo pip install ansible
 * Modules
 * Roles
 
-== 
-
 == Inventory
 
 == Modules
@@ -78,3 +84,57 @@ sudo pip install ansible
 == Playbooks
 
 == Roles
+
+[%step]
+* Organiser son playbook
+* Basé sur des conventions (tasks, handlers, vars …)
+* Réutilisable !!
+* Un role => un groupe de machine
+** Ex: rôle « apache_httpd » => serveurs « front »
+
+== Roles | Organisation
+
+== Variables
+
+httpd/vars/main.yml
+---
+httpd_version: 2.3
+
+httpd/tasks/main.yml
+---
+- name: Ensure httpd is installed.
+  yum: name= "httpd"
+            state= present
+            version= {{ version }}
+
+== Tasks
+
+Tasks
+
+== Templates
+
+== Handlers
+
+== Ansible-galaxy
+
+== Ansible & exécution
+
+== Jenkins | configuration d'un job
+
+== Jenkins
+
+* Déclencher un build à partir d’un événement (appel rest, poll scm)
+* Lancer un playbook à partir d’une UI
+* Historiser les exécutions
+* Intégrer un déploiement Ansible dans un pipeline Jenkins
+
+== Ansible | Container
+
+* Ansible-container (beta)
+** Contruit des containers docker à partir de playbook Ansible
+** Déployer ces containers dans le cloud
+** Piloter ces containers
+
+== Questions ?
+
+== Merci 
