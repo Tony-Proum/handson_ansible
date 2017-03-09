@@ -1,0 +1,80 @@
+= Automatiser avec  Ansible
+Antoine Méausoone <meausoone.a@sfeir.com>
+:backend: revealjs
+:revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/
+:revealjs_history: true
+
+== /Me
+
+*  Antoine Méausoone
+*  2 enfants
+*  Ingénieur logiciel --Atos Worldline-- --Capgemini-- Sfeir \o/
+*  Java,  DevOps.
+
+== Problèmes d'Ops aujourd'hui
+
+image::slides/server-rack.jpg[]
+
+== Comment ?
+
+[%step]
+* Accélérer les déploiements ?
+* Fiabiliser les environnements ?
+* Faciliter la gestion des serveurs ?
+* Automatiser les tâches récurrentes ?
+
+[NOTE.speaker]
+--
+* Accélérer les déploiements ?
+* Fiabiliser les environnements ?
+* Faciliter la gestion des serveurs ?
+* Automatiser les tâches récurrentes ?
+--
+
+== Provisionning
+
+image::/slides/images/logo-chef.png[]
+image::/slides/images/logo-puppet.png[]
+image::/slides/images/logo-salt.png[]
+image::/slides/images/logo-ansible.png[]
+
+== Pourquoi Ansible ?
+
+* Pas d’agents, pas de master
+* Configuration en YAML
+* S’installe avec un simple package
+* Très simple à apprendre et à utiliser
+
+== Historique
+
+* Créé en 2012 par link:https://www.linkedin.com/in/michaeldehaan/[Michael DeHaan] pour créer un outil simple par rapport aux concurrents Chef et Puppet
+* Racheté par RedHat en 2015
+
+== Trends
+
++++
+<script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/925_RC01/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"/m/03d3cjz","geo":"","time":"today 5-y"},{"keyword":"/m/05zxlz3","geo":"","time":"today 5-y"},{"keyword":"/m/0k0vzjb","geo":"","time":"today 5-y"}],"category":0,"property":""}, {"exploreQuery":"q=%2Fm%2F03d3cjz,%2Fm%2F05zxlz3,%2Fm%2F0k0vzjb","guestPath":"https://trends.google.fr:443/trends/embed/"}); </script>
++++
+
+== Comment ça marche ?
+
+== Installation
+
+sudo pip install ansible
+
+== Concepts
+
+* Inventory
+* Playbooks
+* Modules
+* Roles
+
+== 
+
+== Inventory
+
+== Modules
+
+== Playbooks
+
+== Roles
