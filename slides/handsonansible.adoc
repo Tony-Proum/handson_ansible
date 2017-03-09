@@ -3,17 +3,18 @@ Antoine Méausoone <meausoone.a@sfeir.com>
 :backend: revealjs
 :revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/
 :revealjs_history: true
+:imagesdir: images
 
 == /Me
 
 *  Antoine Méausoone
 *  2 enfants
 *  Ingénieur logiciel --Atos Worldline-- --Capgemini-- Sfeir \o/
-*  Java,  DevOps.
+*  Dev, Ops ...DevOps?
 
 == Problèmes d'Ops aujourd'hui
 
-image::slides/server-rack.jpg[]
+image::server-rack.jpg[]
 
 == Comment ?
 
@@ -33,10 +34,10 @@ image::slides/server-rack.jpg[]
 
 == Provisionning
 
-image::/slides/images/logo-chef.png[]
-image::/slides/images/logo-puppet.png[]
-image::/slides/images/logo-salt.png[]
-image::/slides/images/logo-ansible.png[]
+image::logo-chef.png[]
+image::logo-puppet.png[]
+image::logo-salt.png[]
+image::logo-ansible.png[]
 
 == Pourquoi Ansible ?
 
@@ -137,4 +138,4 @@ Tasks
 
 == Questions ?
 
-== Merci 
+== Merci
