@@ -14,15 +14,14 @@ Antoine Méausoone <meausoone.a@sfeir.com>
 *  Ingénieur logiciel --Atos Worldline-- --Capgemini-- Sfeir \o/
 *  Dev, Ops ...DevOps?
 
+== Problèmes ?
+
 [%notitle]
-== Ops today
+== Comment gérer tous ces serveurs aujourd'hui ?
 
 image::server-rack.jpg[background, size=cover]
 
-[%step]
-* Comment gérer tous ces serveurs aujourd'hui ?
-
-=== Comment ?
+== Comment ?
 
 [%step]
 * Accélérer les déploiements ?
@@ -30,27 +29,25 @@ image::server-rack.jpg[background, size=cover]
 * Faciliter la gestion des serveurs ?
 * Automatiser les tâches récurrentes ?
 
-=== Let's code this !
+== Let's code this !
 
 image::letscodethis.png[background, size=cover]
 
-// [%step]
-// * Let's code this !
-
-=== Scripts shell ?
+== Scripts shell ?
 
 [%step]
 * Pas "Idempotent"
 * Pas robuste
 * Maintenabilité ?
 
+== La Solution ?
+
 == Provisionning
 
-[width="15%"]
-|=======
-| image::logo-chef.png[] | image::logo-puppet.png[]
-| image::logo-salt.png[] | image::logo-ansible.png[]
-|=======
+image::logo-chef.png[Chef,200,200,float="left",align="center"]
+image::logo-puppet.png[Puppet,200,200,float="left",align="center"]
+image::logo-salt.png[Salt,200,200,float="right",align="center"]
+image::logo-ansible.png[Ansible,200,200,float="right",align="center"]
 
 == Pourquoi Ansible ?
 
@@ -59,15 +56,19 @@ image::letscodethis.png[background, size=cover]
 * Configuration en YAML
 * S’installe avec un simple package
 * Très simple à apprendre et à utiliser
+* Des centaines de modules
 
 == Historique
 
 * Créé en 2012 par link:https://www.linkedin.com/in/michaeldehaan/[Michael DeHaan] pour créer un outil simple par rapport aux concurrents Chef et Puppet
 * Racheté par RedHat en 2015
 
-[%notitle,background-iframe="trends-google.html"]
+[background-iframe="trends-google.html"]
 == Trends
 
+== Installation
+
+sudo pip install ansible
 
 == Comment ça marche ?
 
@@ -77,9 +78,7 @@ image::letscodethis.png[background, size=cover]
 
 
 
-== Installation
 
-sudo pip install ansible
 
 == Concepts
 
