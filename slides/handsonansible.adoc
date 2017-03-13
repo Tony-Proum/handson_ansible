@@ -4,19 +4,37 @@ Antoine Méausoone <meausoone.a@sfeir.com>
 :revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/
 :revealjs_history: true
 :imagesdir: images
-:source-highlighter: coderay
-:revealjs_theme: sky
+// :source-highlighter: coderay
+// :revealjs_theme: sky
+
+
+// ME
+// Comment gérer une infra ? Shell  ?
+// provissioning , pka Ansible ?
+// Ansible : historique, comment ça marche ?, installation
+// Inventory : comment ça marche
+// ad hoc command : ping, setup, service, test si un package est installé.
+// handson 1 : ansible ad hoc
+// playbook : comment écrire un playbook, modules
+// handson 2 : compléter un playbook
+// playbook : les roles, concept organisation
+// handson 3 : compléter un role
+// ansible-galaxy
+// handson 4 : un role avec galaxy
+// ansible / Jenkins
+// ansible / Docker
+//
 
 == /Me
 
 *  Antoine Méausoone
 *  2 enfants
-*  Ingénieur logiciel --Atos Worldline-- --Capgemini-- Sfeir \o/
-*  Dev, Ops ...DevOps?
+*  Ingénieur logiciel, Ex-Atos Worldline, Ex-Capgemini, Sfeir \o/
+*  Dev, Ops ... DevOps?
 
 == Problèmes ?
 
-[%notitle]
+// [%notitle]
 == Comment gérer tous ces serveurs aujourd'hui ?
 
 image::server-rack.jpg[background, size=cover]
@@ -31,7 +49,7 @@ image::server-rack.jpg[background, size=cover]
 
 == Let's code this !
 
-image::letscodethis.png[background, size=cover]
+image::letscodethis.jpg[background, size=cover]
 
 == Scripts shell ?
 
@@ -66,19 +84,22 @@ image::logo-ansible.png[Ansible,200,200,float="right",align="center"]
 [background-iframe="trends-google.html"]
 == Trends
 
-== Installation
-
-sudo pip install ansible
-
 == Comment ça marche ?
 
 // Schéma ssh python
 
-== Ad-hoc commmande
+== Installation
 
+sudo pip install ansible
 
+== Commandes principales
 
+* ansible <host-pattern> -m <module> -a "<module options>" [options]
+* ansible-playbook playbook.yml [options]
 
+== Commandes secondaires
+
+* 
 
 == Concepts
 
