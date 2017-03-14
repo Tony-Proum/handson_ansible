@@ -8,4 +8,4 @@ services:
     - ./slides/:/opt/slides/
     - ./output/:/opt/output/
     environment:
-      INDEX: history.html
+      INDEX: handsonansible.html

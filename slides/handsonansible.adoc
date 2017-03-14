@@ -1,10 +1,12 @@
 = Automatiser avec  Ansible
-Antoine Méausoone <meausoone.a@sfeir.com>
+:author: Antoine Méausoone
+:email: meausoone.a@sfeir.com
+:twitter: https://twitter.com/AMeausoone
 :backend: revealjs
 :revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/
 :revealjs_history: true
 :imagesdir: images
-// :source-highlighter: coderay
+// :source-highlighter: pygments
 // :revealjs_theme: sky
 
 
@@ -27,7 +29,7 @@ Antoine Méausoone <meausoone.a@sfeir.com>
 
 == /Me
 
-*  Antoine Méausoone
+*  {author}
 *  2 enfants
 *  Ingénieur logiciel, Ex-Atos Worldline, Ex-Capgemini, Sfeir \o/
 *  Dev, Ops ... DevOps?
@@ -74,7 +76,7 @@ image::logo-ansible.png[Ansible,200,200,float="right",align="center"]
 * Configuration en YAML
 * S’installe avec un simple package
 * Très simple à apprendre et à utiliser
-* Des centaines de modules
+* Des centaines de modules (+ de 600 aujourd'hui)
 
 == Historique
 
@@ -86,20 +88,23 @@ image::logo-ansible.png[Ansible,200,200,float="right",align="center"]
 
 == Comment ça marche ?
 
-// Schéma ssh python
+image::shema-ssh-ansible.png[ssh]
+
+// TODO Schéma ssh python
 
 == Installation
 
-sudo pip install ansible
+sudo pip install *ansible*
 
 == Commandes principales
 
-* ansible <host-pattern> -m <module> -a "<module options>" [options]
-* ansible-playbook playbook.yml [options]
+* *ansible* <host-pattern> [options]
+* *ansible-playbook* playbook.yml [options]
 
 == Commandes secondaires
 
-* 
+* *ansible-galaxy* [delete|import|info|init|install|list|login|remove|search|setup] [--help] [options]
+* *ansible-vault* [create|decrypt|edit|encrypt|rekey|view] [--help] [options] vaultfile.yml
 
 == Concepts
 
@@ -109,6 +114,26 @@ sudo pip install ansible
 * Roles
 
 == Inventory
+
+[source,Ini]
+----
+[myenvironment:children]
+front
+middle
+backend
+
+[front]
+front1
+front2
+
+[middle]
+middle1
+middle2
+
+[backend]
+backend
+----
+
 
 == Modules
 
