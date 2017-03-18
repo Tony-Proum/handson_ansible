@@ -30,10 +30,10 @@
 
 *  {author}
 *  2 enfants
-*  Ingénieur logiciel, Ex-Atos Worldline, Ex-Capgemini, Sfeir \o/
+*  Ingénieur logiciel, Ex-(Atos) Worldline, Ex-Capgemini, Sfeir \o/
 *  Dev, Ops ... DevOps?
 
-== Problèmes ?
+== Problème
 
 // [%notitle]
 == Comment gérer tous ces serveurs aujourd'hui ?
@@ -94,8 +94,6 @@ image::logo-ansible.png[Ansible,200,200,float="right",align="center"]
 
 image::shema-ssh-ansible.png[ssh]
 
-// TODO Schéma ssh python
-
 == Installation
 
 sudo pip install *ansible*
@@ -117,17 +115,15 @@ sudo pip install *ansible*
 == Concepts
 
 [%step]
-* Inventory
-* Playbooks
-* Modules
-* Roles
-
-== Inventory
+* *Inventory*
+* *Commandes ad-hoc et les modules*
+* *Playbooks*
+* *Roles*
 
 == Inventory
 
 [%step]
-* Liste de machines à gérer
+* Inventaire des machines gérer par Ansible
 * Emplacement :
 ** Par défaut : **/etc/ansible/host**
 ** Option "-i" : ansible -i **hosts**
@@ -514,25 +510,6 @@ front | SUCCESS => {
 }
 ----
 
-=== Module service
-
-* Contrôle les services : stop, start, restart, enabled
-* Gère : BSD init, OpenRC, SysV, Solaris SMF, systemd, upstart.
-
-=== Commandes Ad-hoc | Module service
-
-.ansible front -m service -a "name=httpd state=started enabled=yes"
-
-[source]
-----
-front | SUCCESS => {
-    "changed": true,
-    "enabled": true,
-    "name": "httpd",
-    "state": "started"
-}
-----
-
 === Module yum
 
 * Installer/Désinstaller/Mettre à jour un package
@@ -555,17 +532,84 @@ front | SUCCESS => {
 }
 ----
 
-== Exemples de modules
+=== Module service
+
+* Contrôle les services : stop, start, restart, enabled
+* Gère : BSD init, OpenRC, SysV, Solaris SMF, systemd, upstart.
+
+=== Commandes Ad-hoc | Module service
+
+.ansible front -m service -a "name=httpd state=started enabled=yes"
+
+[source]
+----
+front | SUCCESS => {
+    "changed": true,
+    "enabled": true,
+    "name": "httpd",
+    "state": "started"
+}
+----
+
+== Autres modules pratiques
+
+[%step]
+* *user* : gestion des utilisateurs (et groupes) systèmes
+* *lineinfile* : ajout (ou suppression) d'une ligne dans un fichier basé sur des regex
+* *copy* : copie de fichiers sur les serveurs
+* *fetch* : récupération de fichiers depuis les serveurs
+* *mount* : gestion des montages
+
+[NOTE.speaker]
+--
+* *user* : gestion des utilisateurs (et groupes) systèmes
+* *lineinfile* : ajout (ou suppression) d'une ligne dans un fichier basé sur des regex
+* *copy* : copie de fichiers sur les serveurs
+* *fetch* : récupération de fichiers depuis les serveurs
+* *mount* : gestion des montages
+--
+
+== Autres modules pratiques 2
+
+[%step]
+* *authorized_key*
+* *mysql_db*, *mysql_user*, (*postgresql_[db|user])
+* *git*
+
+[NOTE.speaker]
+--
+* *authorized_key*
+* *mysql_db*, *mysql_user*, (*postgresql_[db|user])
+* *git*
+--
+
+== Modules | Documentation
+
+// TODO
 
 == Playbooks
+
+[NOTE.speaker]
+--
+OK avec les commandes ad-hoc, on a fait des actions très pratique sur les machines, en parallèle,
+Mais on exécute qu'une commande à la fois, pas de variabilisation, pas d'orchestration.
+--
 
 == Playbooks | Ok can we code now ?
 
 [%step]
-* Fichiers Yaml
-* Language Ansible pour la configuration, l'orchestration et le déploiement
 * Programmation déclarative
+* Language Ansible pour la configuration, l'orchestration et le déploiement
 * On fait quoi sur quelles machines ?
+* Yaml !
+
+[NOTE.speaker]
+--
+* Programmation déclarative
+* Language Ansible pour la configuration, l'orchestration et le déploiement
+* On fait quoi sur quelles machines ?
+* Yaml !
+--
 
 == Playbooks
 
@@ -600,19 +644,63 @@ front | SUCCESS => {
 * Si nécessaire on redémarre le service
 --
 
-== Playbooks | Exécutions
+== Playbooks | Exécution
 
 . ansible-playbook playbook.yml
 
 == Variables
 
-== Organisations des répertoires
+[source,yaml]
+.httpd/vars/main.yml
+----
+httpd_version: 2.3
+----
+
+[source,yaml]
+.httpd/tasks/main.yml
+----
+- name: Ensure httpd is installed
+  yum: name= "httpd"
+            state= present
+            version= {{ httpd_version }}
+----
+
+[NOTE.speaker]
+--
+* Exemple simple
+* Mais les variables vont nous servir à bien plus de choses
+--
+
+== Organisations de mon répertoire playbooks
+
+[source]
+----
+.
+groups_vars/
+    |-- all/
+        `-- vars.yml
+    |-- prod/
+        `-- vars.yml
+    |-- preprod/
+        `-- vars.yml
+    |-- dev/
+        `-- vars.yml
+    |-- qualif/
+        `-- vars.yml
+        
+----
 
 == Conditions
 
+// TODO
+
 == Loops
 
+// TODO
+
 == Templates
+
+// TODO
 
 == Playbook | Problèmes
 
@@ -632,29 +720,44 @@ front | SUCCESS => {
 
 == Roles | Organisation
 
-== Variables
-
-[source,yaml]
-.httpd/vars/main.yml
+[source]
 ----
-httpd_version: 2.3
+playbooks
+roles
+.
+|-- defaults
+    `-- main.yml
+|-- files
+    `-- epel.key
+|-- handlers
+    `-- main.yml
+|-- tasks
+    `-- main.yml
+|-- templates
+    `-- httpd.conf.nj2
+|-- vars
+    `-- main.yml
 ----
-
-[source,yaml]
-.httpd/tasks/main.yml
-----
-- name: Ensure httpd is installed
-  yum: name= "httpd"
-            state= present
-            version= {{ httpd_version }}
-----
-
 
 == Ansible-galaxy
 
-== Ansible & exécution
+// TODO
+
+== Orchestration
+
+// TODO
+
+== Orchestration | Exemples
+
+// TODO
+
+== Ansible | Scheduling
+
+// TODO
 
 == Jenkins | configuration d'un job
+
+// TODO
 
 == Jenkins
 
