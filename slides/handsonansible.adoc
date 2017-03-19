@@ -684,7 +684,7 @@ playbooks/
 
 Utilise des variables ou des facts (setup)
 
-[source]
+[source,yaml]
 .Pour exécuter un module
 ----
 - name: Install Apache (Ubuntu)
@@ -698,7 +698,7 @@ Utilise des variables ou des facts (setup)
 
 == Condition (2)
 
-[source]
+[source,yaml]
 .Pour faire un "include"
 ----
 - include: tasks/sometasks.yml
@@ -707,7 +707,7 @@ Utilise des variables ou des facts (setup)
 
 == Boucle
 
-[source]
+[source,yaml]
 ----
 - name: add several users
   user:
@@ -721,7 +721,7 @@ Utilise des variables ou des facts (setup)
 
 == Boucle avec des objets
 
-[source]
+[source,yaml]
 ----
 - name: add several users
   user:
@@ -829,9 +829,25 @@ playbooks/
 * *files* : Les fichiers statiques
 * *meta* : Contient les dépendances du rôle
 
+== Roles | Playbook
+
+[source,yaml]
+----
+- name: Install httpd on webservers
+  hosts: webservers
+  roles:
+    - ansible-role-apache
+----
+
 == Ansible-galaxy
 
-// TODO
+image::ansible-galaxy-home.png[]
+
+== Ansible-galaxy (2)
+
+Ansible galaxy est le site pour trouver, réutiliser ou partager des rôles Ansible.
+
+https://galaxy.ansible.com/
 
 == Orchestration
 
