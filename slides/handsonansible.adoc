@@ -87,8 +87,10 @@ image::logo-ansible.png[Ansible,200,200,float="right",align="center"]
 * Créé en 2012 par link:https://www.linkedin.com/in/michaeldehaan/[Michael DeHaan] pour créer un outil simple par rapport aux concurrents Chef et Puppet
 * Racheté par RedHat en 2015
 
-[background-iframe="trends-google.html"]
+// [background-iframe="trends-google.html"]
 == Trends
+
+image::google-trends-chef-puppet-ansible.png[]
 
 == Comment ça marche ?
 
@@ -553,7 +555,7 @@ front | SUCCESS => {
 * *mount* : gestion des montages
 --
 
-== Autres modules pratiques 2
+== Autres modules pratiques (2)
 
 [%step]
 * *authorized_key*
@@ -569,7 +571,7 @@ front | SUCCESS => {
 
 == Modules | Documentation
 
-// TODO
+http://docs.ansible.com/ansible/
 
 == Playbooks
 
@@ -635,13 +637,13 @@ ansible-playbook playbook.yml
 == Variables
 
 [source,yaml]
-.httpd/vars/main.yml
+.vars/main.yml
 ----
 httpd_version: 2.3
 ----
 
 [source,yaml]
-.httpd/tasks/main.yml
+.tasks/main.yml
 ----
 - name: Ensure httpd is installed
   yum: name= "httpd"
@@ -652,7 +654,7 @@ httpd_version: 2.3
 [NOTE.speaker]
 --
 * Exemple simple
-* Mais les variables vont nous servir à bien plus de choses
+* Mais les variables vont nous servir à bien plus de choses, on va voir ça juste après.
 --
 
 == Organisation du répertoire playbooks
@@ -675,7 +677,7 @@ playbooks/
 │   │   └── vars.yml
 │   └── database02
 │       └── vars.yml
-├── site.yaml
+├── site.yml
 ├── webservers.yml
 └── database.yml
 ----
@@ -849,28 +851,22 @@ Ansible galaxy est le site pour trouver, réutiliser ou partager des rôles Ansi
 
 https://galaxy.ansible.com/
 
-== Orchestration
+// == Orchestration
 
-// TODO
-
-== Orchestration | Exemples
-
-// TODO
-
-== Ansible | Scheduling
-
-// TODO
-
-== Jenkins | configuration d'un job
-
-// TODO
-
-== Jenkins
+== Ansible | Jenkins
 
 * Déclencher un build à partir d’un événement (appel rest, poll scm)
 * Lancer un playbook à partir d’une UI
 * Historiser les exécutions
 * Intégrer un déploiement Ansible dans un pipeline Jenkins
+
+== Jenkins | Configuration d'un job
+
+image::jenkins-deploy-ansible-config.png[]
+
+== Jenkins | Console
+
+image::jenkins-deploy-ansible-console.png[]
 
 == Ansible | Container
 
