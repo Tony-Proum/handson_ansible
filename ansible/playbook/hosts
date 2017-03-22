@@ -1,0 +1,8 @@
+[front]
+front	ansible_user=root	ansible_ssh_pass=root
+
+[zabbixserver]
+zabbixserver	ansible_user=root	ansible_ssh_pass=root
+
+[backend]
+backend	ansible_user=root	ansible_ssh_pass=root
