@@ -16,6 +16,10 @@ services:
       build: centos6_with_ssh/.
       expose:
       - "22"
+      expose:
+      - "22"
+      ports:
+      - "83:80"
       container_name: demo
   front1:
     build: centos6_with_ssh/.

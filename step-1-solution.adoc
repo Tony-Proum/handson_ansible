@@ -1,0 +1,87 @@
+= 3615 Soluce
+
+== Soluce 1
+
+[source]
+----
+[test]
+demo	ansible_user=root	ansible_ssh_pass=root
+----
+
+ansible all -m ping
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+== Soluce 2
+
+[source]
+----
+[prod:children]
+front
+middle
+back
+----
+
+ansible prod -m setup -a "filter=ansible_default_ipv4"
+
+ansible prod -m setup -a "filter=ansible_default_ipv4" -f 1
+
+ansible prod -m setup -a "filter=ansible_default_ipv4" -f 5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+== Soluce  3
+
+ansible demo -m yum -a "name=epel-release state=latest"
+
+ansible demo -m yum -a "name=nginx state=latest"

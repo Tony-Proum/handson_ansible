@@ -1,5 +1,5 @@
 [test]
-# Ajouter la machine demo
+demo	ansible_user=root	ansible_ssh_pass=root
 
 [front]
 front1	ansible_user=root	ansible_ssh_pass=root

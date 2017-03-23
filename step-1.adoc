@@ -1,0 +1,47 @@
+= Hands-on 1 : ansible ad hoc
+
+== Set up
+
+* Démarrer l'environnement :
+
+docker-compose up --build -d
+
+* Se connecter à la machine Ansible :
+
+docker exec -it ansible env TERM=xterm /bin/bash
+
+* Ouvrer votre editeur de texte sur le répertoire "ansible"
+
+== Ex 1
+
+* Compléter le fichier hosts pour ajouter la machine "demo" dans le groupe test
+
+* Faites un ping sur toutes les machines (groupe : "all")
+
+TIP: http://docs.ansible.com/ansible/ping_module.html
+
+== Ex 2
+
+* Compléter le fichier hosts pour obtenir un groupe "prod" contenant les groupes front middle et back
+
+* Collecter des informations sur les machines du groupe prod en filtrant sur l'info "ansible_default_ipv4"
+
+TIP: http://docs.ansible.com/ansible/setup_module.html
+
+* Faites un essai en rejouant la même commande avec un fork à 1 puis à 5
+
+TIP: http://docs.ansible.com/ansible/intro_adhoc.html#parallelism-and-shell-commands
+
+== Ex 3
+
+* Installer le package nginx sur la machine demo (mais installer d'abord le package epel-release)
+
+TIP: http://docs.ansible.com/ansible/yum_module.html
+
+* *Vérifier* que le service est démarré.
+
+TIP: http://docs.ansible.com/ansible/playbooks_checkmode.html
+
+* Si il n'est pas démarré, démarrer le service.
+
+* Vérifier sur http://localhost:83 si le service est accessible.
