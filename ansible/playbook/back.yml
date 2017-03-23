@@ -1,5 +1,5 @@
 ---
 
-- hosts: backend
+- hosts: back
   roles:
      - mysql-master

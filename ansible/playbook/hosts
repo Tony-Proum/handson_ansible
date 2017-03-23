@@ -1,11 +1,15 @@
-[demo]
-# Ajouter la machine demo 
+[test]
+# Ajouter la machine demo
 
 [front]
-front	ansible_user=root	ansible_ssh_pass=root
+front1	ansible_user=root	ansible_ssh_pass=root
+front2	ansible_user=root	ansible_ssh_pass=root
 
-[zabbixserver]
-zabbixserver	ansible_user=root	ansible_ssh_pass=root
+[middle]
+server	ansible_user=root	ansible_ssh_pass=root
 
-[backend]
-backend	ansible_user=root	ansible_ssh_pass=root
+[back]
+mysql	ansible_user=root	ansible_ssh_pass=root
+
+[prod:children]
+# Ajouter les serveurs front middle back pour accéder à ces machines via le groupe "prod"

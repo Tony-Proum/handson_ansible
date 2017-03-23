@@ -1,12 +1,12 @@
 ---
 
-- hosts: zabbixserver
-  tasks: 
+- hosts: middle
+  tasks:
     - name: Install Epel
       yum: name=epel-release
            state=present
 
-- hosts: zabbixserver
+- hosts: middle
   vars:
     zabbix_url: localhost
   roles:

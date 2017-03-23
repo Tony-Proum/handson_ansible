@@ -1,0 +1,15 @@
+
+Ex 1 :
+
+[test]
+demo	ansible_user=root	ansible_ssh_pass=root
+
+ansible all -m ping
+
+Ex 2 :
+
+ansible prod -m setup -a "filter=ansible_default_ipv4"
+
+ansible prod -m setup -a "filter=ansible_default_ipv4" -f 1
+
+ansible prod -m setup -a "filter=ansible_default_ipv4" -f 5

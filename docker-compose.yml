@@ -4,47 +4,52 @@ services:
     build: ansible/.
     links:
     - demo
-    - front
-    - zabbixserver
-    - backend
+    - front1
+    - front2
+    - server
+    - mysql
     command: tail -F /var/log/test
     container_name: ansible
     volumes:
     - ./ansible/playbook/:/playbook/
-  front:
+  demo:
+      build: centos6_with_ssh/.
+      expose:
+      - "22"
+      container_name: demo
+  front1:
     build: centos6_with_ssh/.
     links:
-    - zabbixserver
+    - server
     expose:
     - "22"
     ports:
     - "80:80"
-    container_name: front
-  demo:
-    build: centos6_with_ssh/.
-    expose:
-    - "22"
-    container_name: demo
-  zabbixserver:
+    container_name: front1
+  front2:
+      build: centos6_with_ssh/.
+      links:
+      - server
+      expose:
+      - "22"
+      ports:
+      - "81:80"
+      container_name: front2
+  server:
     build: centos6_with_ssh/.
     links:
-    - backend
+    - mysql
     expose:
     - "22"
     - "80"
     ports:
     - "8081:80"
-    container_name: zabbixserver
-    # command: tail -F /var/log/test
-  backend:
+    container_name: server
+  mysql:
     build: centos6_with_ssh/.
     expose:
     - "22"
     - "3306"
     ports:
     - "3306:3306"
-    container_name: backend
-    # command: tail -F /var/log/test
-# volumes:
-#   playbook:
-#     external: true
+    container_name: mysql
