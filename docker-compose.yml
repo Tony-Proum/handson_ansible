@@ -1,32 +1,33 @@
 version: '2'
 services:
-  # ci:
-  #   image: jenkins:2.7.2
-  #   links:
-  #   - ansible
-  #   ports:
-  #   - "8080:8080"
-  #   container_name: ci
   ansible:
     build: ansible/.
     links:
+    - demo
     - front
     - zabbixserver
     - backend
     command: tail -F /var/log/test
     container_name: ansible
+    volumes:
+    - ./ansible/playbook/:/playbook/
   front:
     build: centos6_with_ssh/.
-    links: 
+    links:
     - zabbixserver
     expose:
     - "22"
     ports:
     - "80:80"
     container_name: front
+  demo:
+    build: centos6_with_ssh/.
+    expose:
+    - "22"
+    container_name: demo
   zabbixserver:
     build: centos6_with_ssh/.
-    links: 
+    links:
     - backend
     expose:
     - "22"

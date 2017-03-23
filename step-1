@@ -1,0 +1,9 @@
+*******************************
+*** step 1 : ansible ad hoc ***
+
+Démarrer l'environnement avec :
+
+docker-compose up --build -d
+docker exec -it ansible env TERM=xterm /bin/bash
+
+Exo 1 : Collecter des informations sur la machine 
