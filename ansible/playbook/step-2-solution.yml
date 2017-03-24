@@ -1,0 +1,42 @@
+---
+
+# Ex 1 :
+#   http://nginx.org/packages/centos/{{ ansible_distribution_major_version }}/$basearch/
+
+
+- hosts: front
+  vars:
+    # Ex 3
+    display_welcome: true
+    welcome_message: "Bienvenue au chfeir share !"
+    sfeiriens:
+      - 1nouche
+      - 2nouche
+      - 3nouche
+  tasks:
+    - name: Install nginx yum repository
+      template:
+        src: nginx.repo.nj2
+        dest: /etc/yum.repos.d/nginx.repo
+        owner: root
+        group: root
+        mode: 0644
+    - name: Ensure nginx is installed.
+      yum:
+        # Ex 2
+        name: "nginx"
+        state: installed
+        enablerepo: nginx
+    - name: Configure nginx
+      template:
+        src: index.html.nj2
+        dest: /usr/share/nginx/html/index.html
+        owner: root
+        group: root
+        mode: 0644
+      notify: Restart nginx
+  handlers:
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to {{ welcome_message }}!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+{% if display_welcome %}
+<h1>Welcome to {{ welcome_message }}!</h1>
+<p>Les gentils membres présents à ce sfeir share sont : </p>
+<ul>
+{% for sfeirien in sfeiriens %}
+  <li>{{ sfeirien }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>

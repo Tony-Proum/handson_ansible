@@ -1,7 +1,42 @@
 ---
 
+# Step 2 : Nous allons installer nginx sur nos fronts
+# 
+# Ex 1 :
+#   Pour remplir correctement le template "nginx.repo.j2", lancer la commande :
+#   ansible front -m setup -a "filter=ansible_distribution*"
+#   pour vérifier quel variable vous devez utiliser pour compléter l'adresse du repo yum.
+#
+# Ex 2 :
+#   Compléter le module yum pour installer le package nginx
+#   TIP : http://docs.ansible.com/ansible/yum_module.html
+#
+# Ex 3 :
+#   En regardant le fichier html nginx/index.html.nj2, complétez les variables, pour afficher correctement
+#   le message de la page d'accueil
+#
+# Ex 4 :
+#   Exécutez Ansible :
+#   ansible-playbook step-2.yml --step
+#   répondez "y" à chaque étape
+#   Vérifier que nginx est bien accessible, et que la page d'accueil a bien été modifié.
+#
+# Ex 5 :
+#   Ajouter un membre à la liste des personnes présentes
+#   exécutez la commande :
+#   ansible-playbook step-2.yml --check --diff
+#   Vous voyez les différences qui auraient été appliqués, puis
+#   ansible-playbook step-2.yml
+#   Vous pouvez constater que nginx a été redémarré suite à la modification de la page index.html
 
 - hosts: front
+  vars:
+    # welcome:
+    # liste:
+    #   - 1nouche
+    #   - 2nouche
+    #   - 3nouche
+    # boolean: true
   tasks:
     - name: Install nginx yum repository
       template:
@@ -12,11 +47,19 @@
         mode: 0644
     - name: Ensure nginx is installed.
       yum:
-        name: "{{ nginx_package_name }}"
-        state: installed
+        # key: value
+        # key: value
         enablerepo: nginx
     - name: Configure nginx
-      template: 
+      template:
+        src: nginx/index.html.nj2
+        dest: /usr/share/nginx/html/index.html
+        owner: root
+        group: root
+        mode: 0644
+      notify: Restart nginx
   handlers:
     - name: Restart nginx
-      service: name=nginx state=restarted
+      service:
+        name: nginx
+        state: restarted
