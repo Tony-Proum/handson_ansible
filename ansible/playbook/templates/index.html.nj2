@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Welcome to {{ welcome_message }}!</title>
+<title>{{ welcome_message }}!</title>
 <style>
     body {
         width: 35em;
@@ -12,7 +12,7 @@
 </head>
 <body>
 {% if display_welcome %}
-<h1>Welcome to {{ welcome_message }}!</h1>
+<h1>{{ welcome_message }}!</h1>
 <p>Les gentils membres présents à ce sfeir share sont : </p>
 <ul>
 {% for sfeirien in sfeiriens %}

@@ -1,7 +1,0 @@
----
-
-- hosts: all
-  vars: 
-    zabbix_url: http://front
-  roles:
-     - ansible-zabbix-agent-master

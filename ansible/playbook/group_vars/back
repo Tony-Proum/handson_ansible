@@ -1,0 +1,17 @@
+---
+
+# A list that has all the databases to be
+# created and their replication status:
+mysql_db:
+  - name: zabbix
+    replicate: no
+
+# A list of the mysql users to be created
+# and their password and privileges:
+mysql_users:
+  - name: zabbix
+    pass: zabbix
+    priv: "*.*:ALL"
+    host: "%"
+
+mysql_bind_address: "{{ ansible_all_ipv4_addresses[0] }}"

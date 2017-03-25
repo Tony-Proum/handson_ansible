@@ -1,0 +1,24 @@
+---
+# Step 3 : compléter un role
+#
+# Ex 1 :
+#   Compléter le playbook ci-dessous pour appliquer le rôle "mysql_master" sur le host "back"
+#
+#   TIP: http://docs.ansible.com/ansible/playbooks_roles.html#roles
+#
+# Ex 2 :
+#   En vous basant sur le fichier README dans roles/mysql-master/README.md
+#   Compléter le fichier group_vars/back, et renseigner les variables:
+#   * mysql_db            => Créer une base de données nommé : zabbix sans réplication
+#   * mysql_users         => Créer un user : zabbix, mot de passe : zabbix
+#   * mysql_bind_address  =>
+#         lancer la commande : ansible back -m setup -a "filter=ansible_all_ip*" pour trouver l'ip
+#         de la variable contenant l'ip du serveur bdd. Pour obtenir la première valeur d'un tableau, spécifier
+#         "[0]", ex : {{ variable[0] }}
+#
+#  Ex 3 :
+#    Compléter le rôle mysql-master pour inclure les variables correspondant à l'OS du système cible.
+#    Lancer la commande : ansible back -m setup -a "filter=*family*" pour identifier la variable adéquate.
+#
+#   TIP: http://docs.ansible.com/ansible/include_vars_module.html
+# 
