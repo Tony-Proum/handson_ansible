@@ -1,5 +1,0 @@
----
-
-- hosts: back
-  roles:
-     - mysql-master

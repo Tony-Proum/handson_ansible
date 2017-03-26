@@ -1,0 +1,7 @@
+---
+
+- src: geerlingguy.apache
+- src: geerlingguy.php
+- src: https://github.com/Ameausoone/ansible-zabbix-server
+  version: master
+  name: ameausoone.zabbix-server

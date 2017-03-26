@@ -1,7 +1,7 @@
 ---
 
 # Step 2 : Nous allons installer nginx sur nos fronts
-# 
+#
 # Ex 1 :
 #   Pour remplir correctement le template "nginx.repo.j2", lancer la commande :
 #   ansible front -m setup -a "filter=ansible_distribution*"

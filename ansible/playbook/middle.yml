@@ -10,6 +10,6 @@
   vars:
     zabbix_url: localhost
   roles:
-    - ansible-role-apache-master
-    - ansible-role-php-master
-    - ansible-zabbix-server-master
+    - geerlingguy.apache
+    - geerlingguy.php
+    - ameausoone.zabbix-server

@@ -1,0 +1,28 @@
+---
+# Step 4 : ansible-galaxy ***
+#
+# Ex 1 :
+#   Les rôles déclarés ci-dessous ne sont pas présents dans le répertoires rôles
+#   Ils sont déclarés dans le fichier requirements.yml
+#   Lancer le téléchargement des rôles avec :
+#   ansible-galaxy install -r requirements.yml
+#
+#   Puis lancer l'installation :
+#   ansible-playbook step-4.yml --diff -v
+#
+#   Puis vérifier que le service est disponible à cette addresse :
+#   http://localhost:8081
+#   login/password : admin/zabbix
+
+
+- hosts: middle
+  tasks:
+    - name: Install Epel
+      yum: name=epel-release
+           state=present
+
+- hosts: middle
+  roles:
+    - geerlingguy.apache
+    - geerlingguy.php
+    - ameausoone.zabbix-server

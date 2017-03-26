@@ -1,5 +1,0 @@
----
-
-- hosts: front
-  roles:
-     - ansible-role-nginx-master
