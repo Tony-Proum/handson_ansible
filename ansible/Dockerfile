@@ -1,7 +1,5 @@
 FROM ansible/centos7-ansible
 
-# COPY playbook /playbook
-
 WORKDIR /playbook
 
 RUN yum install -y sshpass nc
@@ -9,5 +7,3 @@ RUN yum install -y sshpass nc
 RUN pip install zabbix-api
 
 VOLUME /playbook
-
-# EXPOSE 8080
