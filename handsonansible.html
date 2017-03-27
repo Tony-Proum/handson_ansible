@@ -1,0 +1,567 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8" /><meta name="author" content="Antoine Méausoone" /><title>Automatiser avec  Ansible</title><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" /><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport" /><link href="reveal.js/css/reveal.css" rel="stylesheet" /><link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" /><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet" /><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title"><h1>Automatiser avec  Ansible</h1><p class="author"><small>Antoine Méausoone</small></p></section><section id="__me"><h2>/Me</h2><div class="ulist"><ul><li><p>Antoine Méausoone</p></li><li><p>2 enfants</p></li><li><p>Ingénieur logiciel, Ex-(Atos) Worldline, Ex-Capgemini, Sfeir \o/</p></li><li><p>Dev, Ops &#8230;&#8203; DevOps?</p></li></ul></div></section>
+<section id="_problme"><h2>Problème</h2></section>
+<section id="_comment_grer_tous_ces_serveurs_aujourd_hui" data-background-image="images/server-rack.jpg" data-background-size="cover"><h2>Comment gérer tous ces serveurs aujourd&#8217;hui ?</h2>
+<aside class="notes"><div class="paragraph"><p>Comment gérer tous ces serveurs aujourd&#8217;hui ?</p></div></aside></section>
+<section id="_comment"><h2>Comment ?</h2><div class="ulist"><ul><li class="fragment"><p>Accélérer les déploiements ?</p></li><li class="fragment"><p>Fiabiliser les environnements ?</p></li><li class="fragment"><p>Faciliter la gestion des serveurs ?</p></li><li class="fragment"><p>Automatiser les tâches récurrentes ?</p></li></ul></div></section>
+<section id="_let_s_code_this" data-background-image="images/letscodethis.jpg" data-background-size="cover"><h2>Let&#8217;s code this !</h2></section>
+<section id="_scripts_shell"><h2>Scripts shell ?</h2><div class="ulist"><ul><li class="fragment"><p>Pas "Idempotent"</p></li><li class="fragment"><p>Pas robuste</p></li><li class="fragment"><p>Maintenabilité ?</p></li></ul></div></section>
+<section id="_la_solution"><h2>La Solution ?</h2></section>
+<section id="_provisionning"><h2>Provisionning</h2><div class="imageblock" style="text-align: center; float: left"><img src="images/logo-chef.png" alt="Chef" width="200" height="200" /></div>
+<div class="imageblock" style="text-align: center; float: left"><img src="images/logo-puppet.png" alt="Puppet" width="200" height="200" /></div>
+<div class="imageblock" style="text-align: center; float: right"><img src="images/logo-salt.png" alt="Salt" width="200" height="200" /></div>
+<div class="imageblock" style="text-align: center; float: right"><img src="images/logo-ansible.png" alt="Ansible" width="200" height="200" /></div></section>
+<section id="_pourquoi_ansible"><h2>Pourquoi Ansible ?</h2><div class="ulist"><ul><li class="fragment"><p>Pas d’agents, pas de master</p></li><li class="fragment"><p>Configuration en YAML</p></li><li class="fragment"><p>S’installe avec un simple package</p></li><li class="fragment"><p>Très simple à apprendre et à utiliser</p></li><li class="fragment"><p>Des centaines de modules (+ de 600 aujourd&#8217;hui)</p></li></ul></div></section>
+<section id="_historique"><h2>Historique</h2><div class="ulist"><ul><li><p>Créé en 2012 par <a href="https://www.linkedin.com/in/michaeldehaan/">Michael DeHaan</a> pour créer un outil simple par rapport aux concurrents Chef et Puppet</p></li><li><p>Racheté par RedHat en 2015</p></li></ul></div></section>
+<section id="_trends"><h2>Trends</h2><div class="imageblock" style=""><img src="images/google-trends-chef-puppet-ansible.png" alt="google trends chef puppet ansible" /></div></section>
+<section id="_comment_a_marche"><h2>Comment ça marche ?</h2><div class="imageblock" style=""><img src="images/shema-ssh-ansible.png" alt="ssh" /></div></section>
+<section id="_installation"><h2>Installation</h2><div class="paragraph"><p>sudo pip install <strong>ansible</strong></p></div></section>
+<section id="_commandes_principales"><h2>Commandes principales</h2><div class="ulist"><ul><li class="fragment"><p><strong>ansible</strong> &lt;host-pattern&gt; [options]</p></li><li class="fragment"><p><strong>ansible-playbook</strong> playbook.yml [options]</p></li></ul></div></section>
+<section id="_commandes_secondaires"><h2>Commandes secondaires</h2><div class="ulist"><ul><li class="fragment"><p><strong>ansible-galaxy</strong> [delete|import|info|init|install|list|login|remove|search|setup] [--help] [options]</p></li><li class="fragment"><p><strong>ansible-vault</strong> [create|decrypt|edit|encrypt|rekey|view] [--help] [options] vaultfile.yml</p></li></ul></div></section>
+<section id="_concepts"><h2>Concepts</h2><div class="ulist"><ul><li class="fragment"><p><strong>Inventory</strong></p></li><li class="fragment"><p><strong>Commandes ad-hoc et les modules</strong></p></li><li class="fragment"><p><strong>Playbooks</strong></p></li><li class="fragment"><p><strong>Roles</strong></p></li></ul></div></section>
+<section id="_inventory"><h2>Inventory</h2><div class="ulist"><ul><li class="fragment"><p>Inventaire des machines gérer par Ansible</p></li><li class="fragment"><p>Emplacement :</p><div class="ulist"><ul><li><p>Par défaut : <strong>/etc/ansible/host</strong></p></li><li><p>Option "-i" : ansible -i <strong>hosts</strong></p></li><li><p>Défini dans <strong>ansible.cfg</strong></p></li></ul></div></li><li class="fragment"><p>Inventaire dynamique : AWS, DigitalOcean, ou un script custom</p></li></ul></div></section>
+<section id="_inventory_exemples"><h2>Inventory | Exemples</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="Ini language-Ini">[front]                   # un groupe
+front1                    # les machines du groupes
+front2
+
+[middle]
+middle[1-2]               # pattern
+
+[backend]
+backend
+
+[myenvironment:children]  # un groupe de groupe
+front
+middle
+backend</code></pre></div></div></section>
+<section id="_commandes_ad_hoc"><h2>Commandes Ad-hoc</h2></section>
+<section id="_commandes_ad_hoc_2"><h2>Commandes Ad-hoc</h2><div class="ulist"><ul><li><p>Une simple ligne de commande</p></li><li><p>Pour exécuter une tâche | module</p></li><li><p>En parallèle</p></li><li><p>Ex : Redémarrer httpd sur mes serveurs web</p></li><li><p>Ex : Installer un package sur mes bdd</p></li></ul></div></section>
+<section id="_module_ping"><h2>Module Ping</h2><div class="ulist"><ul><li><p>Vérifier la connexion sur les serveurs</p></li><li><p>On peut spécifier "all", un groupe ou un pattern de machines</p></li><li><p>s&#8217;exécute en parallèle</p></li></ul></div></section>
+<section id="_commandes_ad_hoc_module_ping"><h2>Commandes Ad-hoc | Module Ping</h2><div class="listingblock"><div class="title">ansible all -m ping</div><div class="content"><pre class="highlight"><code>backend | SUCCESS =&gt; {
+    "changed": false,
+    "ping": "pong"
+}
+front | SUCCESS =&gt; {
+    "changed": false,
+    "ping": "pong"
+}
+zabbixserver | SUCCESS =&gt; {
+    "changed": false,
+    "ping": "pong"
+}</code></pre></div></div></section>
+<section id="_module_setup"><h2>Module Setup</h2><div class="ulist"><ul><li><p>Collecte des informations sur le système</p></li><li><p>Ip, nom, OS, montage, disques</p></li><li><p>Peut-être utilisé dans des conditions (playbook)</p></li></ul></div></section>
+<section id="_commandes_ad_hoc_module_setup"><h2>Commandes Ad-hoc | Module Setup</h2><div class="listingblock"><div class="title">ansible front -m setup</div><div class="content"><pre class="highlight"><code>front | SUCCESS =&gt; {
+    "ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "172.21.0.4"
+        ],
+        "ansible_all_ipv6_addresses": [
+            "fe80::42:acff:fe15:4"
+        ],
+        "ansible_architecture": "x86_64",
+        "ansible_bios_date": "03/14/2014",
+        "ansible_bios_version": "1.00",
+        "ansible_date_time": {
+            "date": "2017-03-14",
+            "day": "14",
+            "epoch": "1489509846",
+            "hour": "16",
+            "iso8601": "2017-03-14T16:44:06Z",
+            "iso8601_basic": "20170314T164406313031",
+            "iso8601_basic_short": "20170314T164406",
+            "iso8601_micro": "2017-03-14T16:44:06.313111Z",
+            "minute": "44",
+            "month": "03",
+            "second": "06",
+            "time": "16:44:06",
+            "tz": "UTC",
+            "tz_offset": "+0000",
+            "weekday": "Tuesday",
+            "weekday_number": "2",
+            "weeknumber": "11",
+            "year": "2017"
+        },
+        "ansible_default_ipv4": {
+            "address": "172.21.0.4",
+            "alias": "eth0",
+            "broadcast": "global",
+            "gateway": "172.21.0.1",
+            "interface": "eth0",
+            "macaddress": "02:42:ac:15:00:04",
+            "mtu": 1500,
+            "netmask": "255.255.0.0",
+            "network": "172.21.0.0",
+            "type": "ether"
+        },
+        "ansible_distribution": "CentOS",
+        "ansible_distribution_major_version": "6",
+        "ansible_distribution_release": "Final",
+        "ansible_distribution_version": "6.8",
+        "ansible_dns": {
+            "nameservers": [
+                "127.0.0.11"
+            ],
+            "options": {
+                "ndots": "0"
+            }
+        },
+        "ansible_domain": "",
+        "ansible_env": {
+            "G_BROKEN_FILENAMES": "1",
+            "HOME": "/root",
+            "LANG": "en_US.UTF-8",
+            "LESSOPEN": "||/usr/bin/lesspipe.sh %s",
+            "LOGNAME": "root",
+            "MAIL": "/var/mail/root",
+            "PATH": "/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin",
+            "PWD": "/root",
+            "SHELL": "/bin/bash",
+            "SHLVL": "2",
+            "SSH_CLIENT": "172.21.0.5 37576 22",
+            "SSH_CONNECTION": "172.21.0.5 37576 172.21.0.4 22",
+            "SSH_TTY": "/dev/pts/0",
+            "TERM": "xterm",
+            "USER": "root",
+            "_": "/usr/bin/python"
+        },
+        "ansible_eth0": {
+            "active": true,
+            "device": "eth0",
+            "features": {
+                "busy_poll": "off [fixed]",
+                "fcoe_mtu": "off [fixed]",
+                "generic_receive_offload": "on",
+                "generic_segmentation_offload": "on",
+                "highdma": "on",
+                "hw_tc_offload": "off [fixed]",
+                "l2_fwd_offload": "off [fixed]",
+                "large_receive_offload": "off [fixed]",
+                "loopback": "off [fixed]",
+                "netns_local": "off [fixed]",
+                "ntuple_filters": "off [fixed]",
+                "receive_hashing": "off [fixed]",
+                "rx_all": "off [fixed]",
+                "rx_checksumming": "on",
+                "rx_fcs": "off [fixed]",
+                "rx_vlan_filter": "off [fixed]",
+                "rx_vlan_offload": "on",
+                "rx_vlan_stag_filter": "off [fixed]",
+                "rx_vlan_stag_hw_parse": "on",
+                "scatter_gather": "on",
+                "tcp_segmentation_offload": "on",
+                "tx_checksum_fcoe_crc": "off [fixed]",
+                "tx_checksum_ip_generic": "on",
+                "tx_checksum_ipv4": "off [fixed]",
+                "tx_checksum_ipv6": "off [fixed]",
+                "tx_checksum_sctp": "on",
+                "tx_checksumming": "on",
+                "tx_fcoe_segmentation": "off [fixed]",
+                "tx_gre_csum_segmentation": "on",
+                "tx_gre_segmentation": "on",
+                "tx_gso_partial": "off [fixed]",
+                "tx_gso_robust": "off [fixed]",
+                "tx_ipxip4_segmentation": "on",
+                "tx_ipxip6_segmentation": "on",
+                "tx_lockless": "on [fixed]",
+                "tx_nocache_copy": "off",
+                "tx_scatter_gather": "on",
+                "tx_scatter_gather_fraglist": "on",
+                "tx_sctp_segmentation": "on",
+                "tx_tcp6_segmentation": "on",
+                "tx_tcp_ecn_segmentation": "on",
+                "tx_tcp_mangleid_segmentation": "on",
+                "tx_tcp_segmentation": "on",
+                "tx_udp_tnl_csum_segmentation": "on",
+                "tx_udp_tnl_segmentation": "on",
+                "tx_vlan_offload": "on",
+                "tx_vlan_stag_hw_insert": "on",
+                "udp_fragmentation_offload": "on",
+                "vlan_challenged": "off [fixed]"
+            },
+            "ipv4": {
+                "address": "172.21.0.4",
+                "broadcast": "global",
+                "netmask": "255.255.0.0",
+                "network": "172.21.0.0"
+            },
+            "ipv6": [
+                {
+                    "address": "fe80::42:acff:fe15:4",
+                    "prefix": "64",
+                    "scope": "link"
+                }
+            ],
+            "macaddress": "02:42:ac:15:00:04",
+            "mtu": 1500,
+            "promisc": false,
+            "speed": 10000,
+            "type": "ether"
+        },
+        "ansible_fips": false,
+        "ansible_form_factor": "Unknown",
+        "ansible_fqdn": "4da41820e9a5",
+        "ansible_gather_subset": [
+            "hardware",
+            "network",
+            "virtual"
+        ],
+        "ansible_hostname": "4da41820e9a5",
+        "ansible_interfaces": [
+            "gre0",
+            "ip6tnl0",
+            "lo",
+            "tunl0",
+            "ip6_vti0",
+            "gretap0",
+            "sit0",
+            "ip6gre0",
+            "ip_vti0",
+            "eth0"
+        ],
+        "ansible_kernel": "4.9.12-moby",
+        "ansible_machine": "x86_64",
+        "ansible_memfree_mb": 290,
+        "ansible_memory_mb": {
+            "nocache": {
+                "free": 1293,
+                "used": 705
+            },
+            "real": {
+                "free": 290,
+                "total": 1998,
+                "used": 1708
+            },
+            "swap": {
+                "cached": 0,
+                "free": 3994,
+                "total": 3994,
+                "used": 0
+            }
+        },
+        "ansible_memtotal_mb": 1998,
+        "ansible_mounts": [
+            {
+                "device": "/dev/vda2",
+                "fstype": "ext4",
+                "mount": "/etc/resolv.conf",
+                "options": "rw,relatime,data=ordered,bind",
+                "size_available": 55290834944,
+                "size_total": 63381999616,
+                "uuid": "N/A"
+            },
+            {
+                "device": "/dev/vda2",
+                "fstype": "ext4",
+                "mount": "/etc/hostname",
+                "options": "rw,relatime,data=ordered,bind",
+                "size_available": 55290834944,
+                "size_total": 63381999616,
+                "uuid": "N/A"
+            },
+            {
+                "device": "/dev/vda2",
+                "fstype": "ext4",
+                "mount": "/etc/hosts",
+                "options": "rw,relatime,data=ordered,bind",
+                "size_available": 55290834944,
+                "size_total": 63381999616,
+                "uuid": "N/A"
+            }
+        ],
+        "ansible_nodename": "4da41820e9a5",
+        "ansible_os_family": "RedHat",
+        "ansible_pkg_mgr": "yum",
+        "ansible_processor": [
+            "GenuineIntel",
+            "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+            "GenuineIntel",
+            "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+            "GenuineIntel",
+            "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz",
+            "GenuineIntel",
+            "Intel(R) Core(TM) i7-4770HQ CPU @ 2.20GHz"
+        ],
+        "ansible_processor_cores": 1,
+        "ansible_processor_count": 4,
+        "ansible_processor_threads_per_core": 1,
+        "ansible_processor_vcpus": 4,
+        "ansible_product_name": "BHYVE",
+        "ansible_product_serial": "None",
+        "ansible_product_uuid": "1384B81A-C34C-E039-A3D0-76E55EDE16BC",
+        "ansible_product_version": "1.0",
+        "ansible_python": {
+            "executable": "/usr/bin/python",
+            "has_sslcontext": false,
+            "type": "CPython",
+            "version": {
+                "major": 2,
+                "micro": 6,
+                "minor": 6,
+                "releaselevel": "final",
+                "serial": 0
+            },
+            "version_info": [
+                2,
+                6,
+                6,
+                "final",
+                0
+            ]
+        },
+        "ansible_python_version": "2.6.6",
+        "ansible_selinux": false,
+        "ansible_service_mgr": "sshd",
+        "ansible_ssh_host_key_dsa_public": "AAAAB3NzaC1kc3MAAACBALkgOtMWMj44kJdUkoTEdnHoscOjhcHfBOuAFgWZZKj42KRyVogp+EjR3wzN8BLuDNi80KjNqa7dxAuHenzAX39p/rdEBQXhcb03AnuErMtXvx/2+CGRUAerXPj5qy0e53B5sPfAKQX+rWZ16HqTfKRz6QAOgbf93eV7YMHy1WDPAAAAFQD6bC//7Dt2ZIsRybv7sQT2joHHlQAAAIEAhc04iHZyR3ZE0qcs4oVlDka0nrp0a74W3DEieGfXqlRZVGo+fWMgO6GE1bKEq+WFdS0XLJuLYtvbUuu/6MKUcOeNj88A9aD0uU9Mqbuo4mHCukcxDo4FsWCDfP6K0GnTNBm2LPX0qDA/LjffbAzEnoXXRWkW1NPuMUiz8s7uK+wAAACAdMZJJkyRxLsVEB4jmXKEcFOZ2b5UjiFUScolNPqbjWyYpB2EkGND+Bg7h0xhJruT5fDuOV28X+Pm3fCVWzPEank88T8/7TagUpF+WjGkWQ6EaE1R0n1PZ6m5tM0rlWXAAV9V7MwlXqQT508VBzyk08ZO7fkgXdD+nJ4wOT+ymY4=",
+        "ansible_ssh_host_key_rsa_public": "AAAAB3NzaC1yc2EAAAABIwAAAQEAvFCRM1GQ2VGhNfftReWaJ7tNOxiMNk0z/Uj8oIyFVbnr9aeFckoY4JogxMYqMZUivbuQo+Dh1AhE/x4ZOGqKr0pZILARQyEgEpd0IEdQ4fDKN93ZsCUFE6DmYymEm+CjQ5y7S3wz04A/nwcyjEMvjL9wt5sVMxZaxIXyvlDsl1opM8YvZhv2S6AZJ5ck+5am8AIYAyyvnwbbPpAH6ClXwycZJW3hMwOVzfWz/4HyK4lsRItRkiCNoSbls+LiOWpZ44/R4vEcG1l6dtekaWllqlzF7JFgKauFScU7TiyGIH9o/13Lj5H00IazAwnNkbYkqRJkqBGwPSsqx6klK1n2Yw==",
+        "ansible_swapfree_mb": 3994,
+        "ansible_swaptotal_mb": 3994,
+        "ansible_system": "Linux",
+        "ansible_system_capabilities_enforced": "True",
+        "ansible_system_vendor": "NA",
+        "ansible_uptime_seconds": 217034,
+        "ansible_user_dir": "/root",
+        "ansible_user_gecos": "root",
+        "ansible_user_gid": 0,
+        "ansible_user_id": "root",
+        "ansible_user_shell": "/bin/bash",
+        "ansible_user_uid": 0,
+        "ansible_userspace_architecture": "x86_64",
+        "ansible_userspace_bits": "64",
+        "ansible_virtualization_role": "guest",
+        "ansible_virtualization_type": "docker",
+        "module_setup": true
+    },
+    "changed": false
+}</code></pre></div></div></section>
+<section id="_module_yum"><h2>Module yum</h2><div class="ulist"><ul><li><p>Installer/Désinstaller/Mettre à jour un package</p></li><li><p>Gestion des repos yum</p></li><li><p>Mise à jour du cache</p></li></ul></div></section>
+<section id="_commandes_ad_hoc_module_yum"><h2>Commandes Ad-hoc | Module yum</h2><div class="listingblock"><div class="title">ansible front -m yum -a "name=httpd state=present"</div><div class="content"><pre class="highlight"><code>front | SUCCESS =&gt; {
+    "changed": true,
+    "msg": "",
+    "rc": 0,
+    "results": [
+        "Loaded plugins: fastestmirror, ovl\nSetting up Install Process\nLoading mirror speeds from cached hostfile\n * base: distrib-coffee.ipsl.jussieu.fr\n * extras: distrib-coffee.ipsl.jussieu.fr\n * updates: ftp.ciril.fr\nResolving Dependencies\n--&gt; Running transaction check\n---&gt; Package httpd.x86_64 0:2.2.15-56.el6.centos.3 will be installed\n--&gt; Processing Dependency: httpd-tools = 2.2.15-56.el6.centos.3 for package: httpd-2.2.15-56.el6.centos.3.x86_64\n--&gt; Processing Dependency: apr-util-ldap for package: httpd-2.2.15-56.el6.centos.3.x86_64\n--&gt; Processing Dependency: /etc/mime.types for package: httpd-2.2.15-56.el6.centos.3.x86_64\n--&gt; Processing Dependency: libaprutil-1.so.0()(64bit) for package: httpd-2.2.15-56.el6.centos.3.x86_64\n--&gt; Processing Dependency: libapr-1.so.0()(64bit) for package: httpd-2.2.15-56.el6.centos.3.x86_64\n--&gt; Running transaction check\n---&gt; Package apr.x86_64 0:1.3.9-5.el6_2 will be installed\n---&gt; Package apr-util.x86_64 0:1.3.9-3.el6_0.1 will be installed\n---&gt; Package apr-util-ldap.x86_64 0:1.3.9-3.el6_0.1 will be installed\n---&gt; Package httpd-tools.x86_64 0:2.2.15-56.el6.centos.3 will be installed\n---&gt; Package mailcap.noarch 0:2.1.31-2.el6 will be installed\n--&gt; Finished Dependency Resolution\n\nDependencies Resolved\n\n================================================================================\n Package            Arch        Version                      Repository    Size\n================================================================================\nInstalling:\n httpd              x86_64      2.2.15-56.el6.centos.3       updates      834 k\nInstalling for dependencies:\n apr                x86_64      1.3.9-5.el6_2                base         123 k\n apr-util           x86_64      1.3.9-3.el6_0.1              base          87 k\n apr-util-ldap      x86_64      1.3.9-3.el6_0.1              base          15 k\n httpd-tools        x86_64      2.2.15-56.el6.centos.3       updates       79 k\n mailcap            noarch      2.1.31-2.el6                 base          27 k\n\nTransaction Summary\n================================================================================\nInstall       6 Package(s)\n\nTotal download size: 1.1 M\nInstalled size: 3.7 M\nDownloading Packages:\n--------------------------------------------------------------------------------\nTotal                                           547 kB/s | 1.1 MB     00:02     \nRunning rpm_check_debug\nRunning Transaction Test\nTransaction Test Succeeded\nRunning Transaction\n\r  Installing : apr-1.3.9-5.el6_2.x86_64                                     1/6 \n\r  Installing : apr-util-1.3.9-3.el6_0.1.x86_64                              2/6 \n\r  Installing : apr-util-ldap-1.3.9-3.el6_0.1.x86_64                         3/6 \n\r  Installing : httpd-tools-2.2.15-56.el6.centos.3.x86_64                    4/6 \n\r  Installing : mailcap-2.1.31-2.el6.noarch                                  5/6 \n\r  Installing : httpd-2.2.15-56.el6.centos.3.x86_64                          6/6 \n\r  Verifying  : httpd-2.2.15-56.el6.centos.3.x86_64                          1/6 \n\r  Verifying  : apr-util-ldap-1.3.9-3.el6_0.1.x86_64                         2/6 \n\r  Verifying  : apr-1.3.9-5.el6_2.x86_64                                     3/6 \n\r  Verifying  : httpd-tools-2.2.15-56.el6.centos.3.x86_64                    4/6 \n\r  Verifying  : mailcap-2.1.31-2.el6.noarch                                  5/6 \n\r  Verifying  : apr-util-1.3.9-3.el6_0.1.x86_64                              6/6 \n\nInstalled:\n  httpd.x86_64 0:2.2.15-56.el6.centos.3                                         \n\nDependency Installed:\n  apr.x86_64 0:1.3.9-5.el6_2                                                    \n  apr-util.x86_64 0:1.3.9-3.el6_0.1                                             \n  apr-util-ldap.x86_64 0:1.3.9-3.el6_0.1                                        \n  httpd-tools.x86_64 0:2.2.15-56.el6.centos.3                                   \n  mailcap.noarch 0:2.1.31-2.el6                                                 \n\nComplete!\n"
+    ]
+}</code></pre></div></div></section>
+<section id="_module_service"><h2>Module service</h2><div class="ulist"><ul><li><p>Contrôle les services : stop, start, restart, enabled</p></li><li><p>Gère : BSD init, OpenRC, SysV, Solaris SMF, systemd, upstart.</p></li></ul></div></section>
+<section id="_commandes_ad_hoc_module_service"><h2>Commandes Ad-hoc | Module service</h2><div class="listingblock"><div class="title">ansible front -m service -a "name=httpd state=started enabled=yes"</div><div class="content"><pre class="highlight"><code>front | SUCCESS =&gt; {
+    "changed": true,
+    "enabled": true,
+    "name": "httpd",
+    "state": "started"
+}</code></pre></div></div></section>
+<section id="_autres_modules_pratiques"><h2>Autres modules pratiques</h2><div class="ulist"><ul><li class="fragment"><p><strong>user</strong> : gestion des utilisateurs (et groupes) systèmes</p></li><li class="fragment"><p><strong>lineinfile</strong> : ajout (ou suppression) d&#8217;une ligne dans un fichier basé sur des regex</p></li><li class="fragment"><p><strong>copy</strong> : copie de fichiers sur les serveurs</p></li><li class="fragment"><p><strong>fetch</strong> : récupération de fichiers depuis les serveurs</p></li><li class="fragment"><p><strong>mount</strong> : gestion des montages</p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p><strong>user</strong> : gestion des utilisateurs (et groupes) systèmes</p></li><li><p><strong>lineinfile</strong> : ajout (ou suppression) d&#8217;une ligne dans un fichier basé sur des regex</p></li><li><p><strong>copy</strong> : copie de fichiers sur les serveurs</p></li><li><p><strong>fetch</strong> : récupération de fichiers depuis les serveurs</p></li><li><p><strong>mount</strong> : gestion des montages</p></li></ul></div></aside></section>
+<section id="_autres_modules_pratiques_2"><h2>Autres modules pratiques (2)</h2><div class="ulist"><ul><li class="fragment"><p><strong>authorized_key</strong></p></li><li class="fragment"><p><strong>mysql_db</strong>, <strong>mysql_user</strong>, (*postgresql_[db|user])</p></li><li class="fragment"><p><strong>git</strong></p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p><strong>authorized_key</strong></p></li><li><p><strong>mysql_db</strong>, <strong>mysql_user</strong>, (*postgresql_[db|user])</p></li><li><p><strong>git</strong></p></li></ul></div></aside></section>
+<section id="_modules_documentation"><h2>Modules | Documentation</h2><div class="paragraph"><p><a href="http://docs.ansible.com/ansible/" class="bare">http://docs.ansible.com/ansible/</a></p></div></section>
+<section id="_playbooks"><h2>Playbooks</h2><aside class="notes"><div class="paragraph"><p>OK avec les commandes ad-hoc, on a fait des actions très pratique sur les machines, en parallèle,
+Mais on exécute qu&#8217;une commande à la fois, pas de variabilisation, pas d&#8217;orchestration.</p></div></aside></section>
+<section id="_playbooks_ok_can_we_code_now"><h2>Playbooks | Ok can we code now ?</h2><div class="ulist"><ul><li class="fragment"><p>Programmation déclarative</p></li><li class="fragment"><p>Language Ansible pour la configuration, l&#8217;orchestration et le déploiement</p></li><li class="fragment"><p>On fait quoi sur quelles machines ?</p></li><li class="fragment"><p>Yaml !</p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Programmation déclarative</p></li><li><p>Language Ansible pour la configuration, l&#8217;orchestration et le déploiement</p></li><li><p>On fait quoi sur quelles machines ?</p></li><li><p>Yaml !</p></li></ul></div></aside></section>
+<section id="_playbooks_2"><h2>Playbooks</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>---
+- hosts: webservers
+  vars:
+    http_port: 80
+    max_clients: 200
+  remote_user: root
+  tasks:
+  - name: ensure apache is at the latest version
+    yum: name=httpd state=latest
+  - name: write the apache config file
+    template: src=/srv/httpd.j2 dest=/etc/httpd.conf
+    notify:
+    - restart apache
+  - name: ensure apache is running (and enable it at boot)
+    service: name=httpd state=started enabled=yes
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted</code></pre></div></div>
+<aside class="notes"><div class="ulist"><ul><li><p>On installe la dernière version du package httpd</p></li><li><p>On va copier le template du fichier de conf httpd.conf</p><div class="ulist"><ul><li><p>On notifie le handler qu&#8217;il est nécessaire de redémarrer httpd</p></li></ul></div></li><li><p>On active le service httpd et on démarre si ça n&#8217;est pas déjà fait</p></li><li><p>Si nécessaire on redémarre le service</p></li></ul></div></aside></section>
+<section id="_playbooks_excution"><h2>Playbooks | Exécution</h2><div class="paragraph"><p>ansible-playbook playbook.yml</p></div></section>
+<section id="_variables"><h2>Variables</h2><div class="listingblock"><div class="title">vars/main.yml</div><div class="content"><pre class="highlight"><code class="yaml language-yaml">httpd_version: 2.3</code></pre></div></div>
+<div class="listingblock"><div class="title">tasks/main.yml</div><div class="content"><pre class="highlight"><code class="yaml language-yaml">- name: Ensure httpd is installed
+  yum: name= "httpd"
+            state= present
+            version= {{ httpd_version }}</code></pre></div></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Exemple simple</p></li><li><p>Mais les variables vont nous servir à bien plus de choses, on va voir ça juste après.</p></li></ul></div></aside></section>
+<section id="_organisation_du_rpertoire_playbooks"><h2>Organisation du répertoire playbooks</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>playbooks/
+├── hosts
+├── groups_vars
+│   ├── all
+│   │   └── vars.yml
+│   ├── prod
+│   │   └── vars.yml
+│   ├── dev
+│   │   └── vars.yml
+│   └── qualif
+│       └── vars.yml
+├── host_vars
+│   ├── webserver01
+│   │   └── vars.yml
+│   └── database02
+│       └── vars.yml
+├── site.yml
+├── webservers.yml
+└── database.yml</code></pre></div></div></section>
+<section id="_condition"><h2>Condition</h2><div class="paragraph"><p>Utilise des variables ou des facts (setup)</p></div>
+<div class="listingblock"><div class="title">Pour exécuter un module</div><div class="content"><pre class="highlight"><code class="yaml language-yaml">- name: Install Apache (Ubuntu)
+  apt: name=apache state=latest
+  when: ansible_os_family == 'Debian'
+
+- name: Install Apache (CentOS)
+  yum: name=httpd state=latest
+  when: ansible_os_family == 'RedHat'</code></pre></div></div></section>
+<section id="_condition_2"><h2>Condition (2)</h2><div class="listingblock"><div class="title">Pour faire un "include"</div><div class="content"><pre class="highlight"><code class="yaml language-yaml">- include: tasks/sometasks.yml
+  when: "'reticulating splines' in output"</code></pre></div></div></section>
+<section id="_boucle"><h2>Boucle</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="yaml language-yaml">- name: add several users
+  user:
+    name: "{{ item }}"
+    state: present
+    groups: "wheel"
+  with_items:
+     - testuser1
+     - testuser2</code></pre></div></div></section>
+<section id="_boucle_avec_des_objets"><h2>Boucle avec des objets</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="yaml language-yaml">- name: add several users
+  user:
+    name: "{{ item.name }}"
+    state: present
+    groups: "{{ item.groups }}"
+  with_items:
+    - { name: 'testuser1', groups: 'wheel' }
+    - { name: 'testuser2', groups: 'root' }</code></pre></div></div></section>
+<section id="_templates_jinja2"><h2>Templates (Jinja2)</h2><div class="listingblock"><div class="content"><pre class="highlight"><code># Generated by Ansible for {{ansible_fqdn}}
+{% if step_main_version == 'v7' %}
+export JDK_HOME={{ jdk_home }}
+export JAVA_HOME={{ jdk_home }}
+{% endif %}
+{% if step_jmx_enabled %}
+export JAVA_OPTS="{{ java_opts }} {{ step_jmx_options }}"
+{% else %}
+export JAVA_OPTS="{{ java_opts }}"
+{% endif %}</code></pre></div></div></section>
+<section id="_playbook_problmes"><h2>Playbook | Problèmes</h2><div class="ulist"><ul><li class="fragment"><p>Très pratique mais&#8230;&#8203;</p></li><li class="fragment"><p>Manque de généricité</p></li><li class="fragment"><p>Difficilement réutilisable</p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Très pratique mais&#8230;&#8203;</p></li><li><p>Manque de généricité</p></li><li><p>Difficilement réutilisable</p></li></ul></div></aside></section>
+<section id="_roles"><h2>Roles</h2><div class="ulist"><ul><li class="fragment"><p>Organiser son playbook</p></li><li class="fragment"><p>Basé sur des conventions (tasks, handlers, vars …)</p></li><li class="fragment"><p>Réutilisable !!</p></li><li class="fragment"><p>Un role &#8658; un groupe de machine</p><div class="ulist"><ul><li><p>Ex: rôle « apache_httpd » &#8658; serveurs « front »</p></li></ul></div></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Organiser son playbook</p></li><li><p>Basé sur des conventions (tasks, handlers, vars …)</p></li><li><p>Réutilisable !!</p></li><li><p>Un role &#8658; un groupe de machine</p><div class="ulist"><ul><li><p>Ex: rôle « apache_httpd » &#8658; serveurs « front »</p></li></ul></div></li></ul></div></aside></section>
+<section id="_roles_organisation"><h2>Roles | Organisation</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>playbooks/
+├── hosts
+├── group_vars
+├── roles
+│   ├── ansible_role_httpd
+│   │   ├── defaults
+│   │   │   └── main.yaml
+│   │   ├── files
+│   │   │   └── main.yaml
+│   │   ├── handlers
+│   │   │   └── main.yaml
+│   │   ├── templates
+│   │   │   └── main.yaml
+│   │   ├── tasks
+│   │   │   └── main.yaml
+│   │   └── vars
+│   │       └── main.yaml
+│   └── ansible_role_mysql
+│   │   ├── defaults
+│   │   │   └── main.yaml
+│   │   ├── files
+│   │   │   └── main.yaml
+│   │   ├── handlers
+│   │   │   └── main.yaml
+│   │   ├── templates
+│   │   │   └── main.yaml
+│   │   ├── tasks
+│   │   │   └── main.yaml
+│   │   └── vars
+│   │       └── main.yaml
+└── site.yaml</code></pre></div></div></section>
+<section id="_roles_organisation_2"><h2>Roles | Organisation</h2><div class="ulist"><ul><li class="fragment"><p><strong>tasks</strong> : Contient les modules à exécuter (point d&#8217;entrée du rôle)</p></li><li class="fragment"><p><strong>handlers</strong> : Contient les modules à "notifier"</p></li><li class="fragment"><p><strong>vars</strong> : Contient les variables (RedHat / Ubuntu par exemple)</p></li><li class="fragment"><p><strong>defaults</strong> : Les variables par défaut</p></li><li class="fragment"><p><strong>templates</strong> : Les fichiers à templatiser</p></li><li class="fragment"><p><strong>files</strong> : Les fichiers statiques</p></li><li class="fragment"><p><strong>meta</strong> : Contient les dépendances du rôle</p></li></ul></div></section>
+<section id="_roles_playbook"><h2>Roles | Playbook</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="yaml language-yaml">- name: Install httpd on webservers
+  hosts: webservers
+  roles:
+    - ansible-role-apache</code></pre></div></div></section>
+<section id="_ansible_galaxy"><h2>Ansible-galaxy</h2><div class="imageblock" style=""><img src="images/ansible-galaxy-home.png" alt="ansible galaxy home" /></div></section>
+<section id="_ansible_galaxy_2"><h2>Ansible-galaxy (2)</h2><div class="paragraph"><p>Ansible galaxy est le site pour trouver, réutiliser ou partager des rôles Ansible.</p></div>
+<div class="paragraph"><p><a href="https://galaxy.ansible.com/" class="bare">https://galaxy.ansible.com/</a></p></div></section>
+<section id="_ansible_jenkins"><h2>Ansible | Jenkins</h2><div class="ulist"><ul><li><p>Déclencher un build à partir d’un événement (appel rest, poll scm)</p></li><li><p>Lancer un playbook à partir d’une UI</p></li><li><p>Historiser les exécutions</p></li><li><p>Intégrer un déploiement Ansible dans un pipeline Jenkins</p></li></ul></div></section>
+<section id="_jenkins_configuration_d_un_job"><h2>Jenkins | Configuration d&#8217;un job</h2><div class="imageblock" style=""><img src="images/jenkins-deploy-ansible-config.png" alt="jenkins deploy ansible config" /></div></section>
+<section id="_jenkins_console"><h2>Jenkins | Console</h2><div class="imageblock" style=""><img src="images/jenkins-deploy-ansible-console.png" alt="jenkins deploy ansible console" /></div></section>
+<section id="_ansible_container"><h2>Ansible | Container</h2><div class="ulist"><ul><li><p>Ansible-container (beta)</p><div class="ulist"><ul><li><p>Contruit des containers docker à partir de playbook Ansible</p></li><li><p>Déployer ces containers dans le cloud</p></li><li><p>Piloter ces containers</p></li></ul></div></li></ul></div></section>
+<section id="_questions"><h2>Questions ?</h2></section>
+<section id="_crdits"><h2>Crédits</h2></section>
+<section id="_merci"><h2>Merci</h2></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'black',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>
