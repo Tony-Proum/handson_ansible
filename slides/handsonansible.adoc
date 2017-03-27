@@ -1,9 +1,6 @@
 = Automatiser avec  Ansible
-:author: Antoine Méausoone
-:email: meausoone.a@sfeir.com
+Antoine Méausoone <meausoone.a@sfeir.com>
 :twitter: https://twitter.com/AMeausoone
-// :backend: revealjs
-// :revealjsdir: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/
 :revealjs_history: true
 :imagesdir: images
 :icons: font
@@ -31,7 +28,7 @@
 *  {author}
 *  2 enfants
 *  Ingénieur logiciel, Ex-(Atos) Worldline, Ex-Capgemini, Sfeir \o/
-*  Dev, Ops ... DevOps?
+*  Dev, Ops
 
 == Problème
 
@@ -573,6 +570,11 @@ front | SUCCESS => {
 
 http://docs.ansible.com/ansible/
 
+[NOTE.speaker]
+--
+!!!!!! HandsOn 1 !!!!!!
+--
+
 == Playbooks
 
 [NOTE.speaker]
@@ -581,20 +583,20 @@ OK avec les commandes ad-hoc, on a fait des actions très pratique sur les machi
 Mais on exécute qu'une commande à la fois, pas de variabilisation, pas d'orchestration.
 --
 
-== Playbooks | Ok can we code now ?
+== Ok can we code now ?
 
 [%step]
-* Programmation déclarative
 * Language Ansible pour la configuration, l'orchestration et le déploiement
-* On fait quoi sur quelles machines ?
+* Programmation déclarative
 * Yaml !
+* On fait quoi sur quelles machines ?
 
 [NOTE.speaker]
 --
-* Programmation déclarative
 * Language Ansible pour la configuration, l'orchestration et le déploiement
-* On fait quoi sur quelles machines ?
+* Programmation déclarative
 * Yaml !
+* On fait quoi sur quelles machines ?
 --
 
 == Playbooks
@@ -851,8 +853,6 @@ Ansible galaxy est le site pour trouver, réutiliser ou partager des rôles Ansi
 
 https://galaxy.ansible.com/
 
-// == Orchestration
-
 == Ansible | Jenkins
 
 * Déclencher un build à partir d’un événement (appel rest, poll scm)
@@ -878,5 +878,10 @@ image::jenkins-deploy-ansible-console.png[]
 == Questions ?
 
 == Crédits
+
+* https://fr.slideshare.net/johnthethird/ansible-presentation-24942953[John Lynch]
+* https://fr.slideshare.net/robertreiz/ansible-40167296[Robert Reiz]
+* https://fr.slideshare.net/schedrov/mold-camp-ansible-is-the-simplest-way-to-automate-no-gifs[Alexander Schedrov]
+* https://fr.slideshare.net/rayedalrashed/ansible-pdf[Rayed Alrashed]
 
 == Merci
